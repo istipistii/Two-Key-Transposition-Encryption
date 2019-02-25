@@ -5,6 +5,7 @@ Created on Mon Feb 25 21:44:03 2019
 
 @author: manzars
 """
+import numpy as np
 class Encrypter:
     
     def remove_blank_space(self, message):
@@ -77,15 +78,15 @@ class Encrypter:
         final_ct = ''.join(str(x) for x in second_ct)
         return final_ct
     
-    
-msg = input("Enter the Text To Be Encrypted")
-encrypter = Encrypter()
-msg = encrypter.remove_blank_space(msg)
-x, y = encrypter.making_x_and_y(msg)
-gm = encrypter.making_global_matrix()
-x_mat = encrypter.making_xmat(x)
-first_ct = encrypter.creating_first_ct(msg, gm, x_mat)
-y_mat = encrypter.making_ymat(y, x_mat)
-final_ct = encrypter.creating_final_ct(first_ct, x_mat, y_mat)
-print("Message = {}\nEncrypted Text = {}\nfirst public key = {}\nsecond public key = {} ".format(msg, final_ct, format(x, 'b'), format(y, 'b')))
-
+def main():
+    msg = input("Enter the Text To Be Encrypted")
+    encrypter = Encrypter()
+    msg = encrypter.remove_blank_space(msg)
+    x, y = encrypter.making_x_and_y(msg)
+    gm = encrypter.making_global_matrix()
+    x_mat = encrypter.making_xmat(x)
+    first_ct = encrypter.creating_first_ct(msg, gm, x_mat)
+    y_mat = encrypter.making_ymat(y, x_mat)
+    final_ct = encrypter.creating_final_ct(first_ct, x_mat, y_mat)
+    print("Message = {}\nEncrypted Text = {}\nfirst public key = {}\nsecond public key = {} ".format(msg, final_ct, format(x, 'b'), format(y, 'b')))
+main()
