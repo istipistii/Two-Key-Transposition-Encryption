@@ -6,6 +6,7 @@ Created on Mon Feb 25 21:44:03 2019
 @author: manzars
 """
 import numpy as np
+
 class Encrypter:
     
     def remove_blank_space(self, message):
@@ -79,7 +80,7 @@ class Encrypter:
         return final_ct
     
 def main():
-    msg = input("Enter the Text To Be Encrypted")
+    msg = input("Enter the Text To Be Encrypted:\n")
     encrypter = Encrypter()
     msg = encrypter.remove_blank_space(msg)
     x, y = encrypter.making_x_and_y(msg)
