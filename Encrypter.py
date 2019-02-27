@@ -53,19 +53,40 @@ class Encrypter:
         first_ct = ''.join(str(x) for x in first_ct)
         return first_ct
     
-    def making_ymat(self, y, x_mat):
-        y_mat = []
-        k = 0
-        for i in range(y, 25):
-            y_mat.append(x_mat[k])
-            k = k + 1
-        for i in range(0, y):
-            y_mat.insert(i, x_mat[k])
-            k = k + 1
+    def making_ymat(self, i, j, x_mat):
+        y_mat, a, b = [], i, j
+        for temp in range(25):
+            y_mat.append("*")
         y_mat = np.asarray(y_mat)
-        y_mat.resize(5, 5)
-        y_mat = y_mat.T.ravel().tolist()
-        return y_mat
+        y_mat = y_mat.reshape(5, 5)
+        x,y = a, b
+        for p in range(5):
+            if(((a + p) % 5) == 0):
+                break
+        a, b = (a+p)%5, (b+1)%5
+        q, k  = 0, 0
+        for j in range(b, b+5):
+            for i in range(a, a+5):
+                y_mat[i%5][j%5] = x_mat[q + p]
+                k = k + 1
+                q = q + 1
+                if((k + p) == 25):
+                    break
+        q = 0
+        while(p != 0):
+            y_mat[x][y] = x_mat[q]
+            x = x + 1
+            p = p - 1
+            q = q + 1
+        return y_mat.ravel().tolist()
+
+    def calculate_index(self, y):
+        k = 0
+        for i in range(5):
+            for j in range(5):
+                if(k == y):
+                    return i,j
+                k = k + 1
     
     def creating_final_ct(self, first_ct, x_mat, y_mat):
         second_ct = []
@@ -87,7 +108,8 @@ def main():
     gm = encrypter.making_global_matrix()
     x_mat = encrypter.making_xmat(x)
     first_ct = encrypter.creating_first_ct(msg, gm, x_mat)
-    y_mat = encrypter.making_ymat(y, x_mat)
+    i, j = encrypter.calculate_index(y)
+    y_mat = encrypter.making_ymat(i, j, x_mat)
     final_ct = encrypter.creating_final_ct(first_ct, x_mat, y_mat)
     print("Message = {}\nEncrypted Text = {}\nfirst public key = {}\nsecond public key = {} ".format(msg, final_ct, format(x, 'b'), format(y, 'b')))
 main()
